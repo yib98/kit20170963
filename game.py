@@ -57,5 +57,3 @@ with open("save.txt", "r", encoding='utf-8') as f:
     
 print(type(character))
 print(character)
-
-

@@ -1,9 +1,19 @@
 from flask import Flask, request, render_template, redirect, url_for, abort
 app = Flask(__name__)
 
+app.secret_key = b'aaa!111/'
+
 @app.route('/')
 def index():
     return '메인페이지'
+
+@app.route('/startgame') 
+def startgame(): 
+    return render_template('startgame.html')
+
+@app.route('/join') 
+def join(): 
+    return render_template('test.html')
 
 @app.route('/hello/')
 def hello():
@@ -45,10 +55,17 @@ def login():
         print (pw,type(pw))
         # id와 pw가 임의로 정한 값이랑 비교 해서 맞으면 맞다 틀리면 틀리다
         if id == 'abc' and pw == '1234':
-            return "안녕하세요~ {} 님".format(id)
+            session['user'] = id
+            return ''' 
+                <script> alert("안녕하세요~ {}님"); 
+                location.href="/form" 
+                </script>
+             '''.format(id) 
+             # return redirect(url_for('form'))
         else:
             return "아이디 또는 패스워드를 확인 하세요."
 
+#로그인 사용자만 접근 가능으로 만들면
 @app.route('/form') 
 def form(): 
     if 'user' in session: 
@@ -77,8 +94,6 @@ def method():
             f.write("%s,%s" % (num, name)) 
         return "POST로 전달된 데이터({}, {})".format(num, name)
 
-
-
 @app.route('/naver')
 def naver():
     return redirect("https:/www.naver.com/")
@@ -101,6 +116,10 @@ def move_site(site):
     else:
         abort(404)
         # return '없는 페이지 입니다.'
+
+@app.route('/') 
+def index(): 
+    return render_template("main.html")
 
 @app.errorhandler(404)
 def page_not_found(error):
