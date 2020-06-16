@@ -1,8 +1,0 @@
-
-
-
-
-num = request.form["num"]
-name = request.form["name"] 
-with open("static/save.txt","w", encoding='utf-8') as f: 
-    f.write("%s,%s" % (num, name))
